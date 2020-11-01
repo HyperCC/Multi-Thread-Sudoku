@@ -19,16 +19,26 @@
 
 package cl.ucn.disc.hpc.charlie.multithreadsudoku;
 
+/**
+ * The principal class to execute the code
+ */
 public class App {
 
+    /**
+     * Principal main method
+     *
+     * @param args
+     */
     public static void main(String[] args) {
 
-        SudokuGrid sudokuGrid = new SudokuGrid(9);
-
-        sudokuGrid.printSudoku();
-
+        // read the txt with the sudoku to solve
         InputFile inputFile = new InputFile("inputSudokus/sudoku9x9.txt");
 
+        // generate a Object SudokuGrid with necessary properties
+        SudokuGrid sudokuGrid = new SudokuGrid(inputFile.getnBlocks(), inputFile.getGrid());
+
+        // print the sudoku to extracted
+        sudokuGrid.printSudoku(sudokuGrid.getGrid());
     }
 
 }

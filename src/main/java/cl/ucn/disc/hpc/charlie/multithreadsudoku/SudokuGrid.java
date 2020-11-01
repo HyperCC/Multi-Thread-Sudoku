@@ -24,36 +24,55 @@ public final class SudokuGrid {
     /**
      * The grid dimension
      */
-    int nBlocks;
+    private int nBlocks;
 
     /**
      * The principal matriz of the sudoku
      */
-    int[][] grid;
+    private int[][] grid;
 
     /**
      * The constructor
      *
      * @param nBlocks
      */
-    public SudokuGrid(int nBlocks) {
+    public SudokuGrid(int nBlocks, int[][] grid) {
         this.nBlocks = nBlocks;
-        this.grid = new int[nBlocks][nBlocks];
-
-        for (int i = 0; i < this.nBlocks; i++) {
-            for (int j = 0; j < this.nBlocks; j++) {
-                this.grid[i][j] = 0;
-            }
-        }
+        this.grid = grid;
     }
 
-    public void printSudoku() {
-        for (int i = 0; i < this.nBlocks; i++) {
-            for (int j = 0; j < this.nBlocks; j++) {
-                System.out.print(this.grid[i][j] + " ");
+    /**
+     * Print a complete grid
+     *
+     * @param grid
+     */
+    public void printSudoku(int[][] grid) {
+
+        for (int i = 0; i < grid.length; i++) {
+            for (int j = 0; j < grid.length; j++) {
+                System.out.print(grid[i][j] + " ");
             }
             System.out.println();
         }
     }
 
+    /**
+     * Getter to the nBlocks
+     *
+     * @return the nBlocks to the Grid
+     */
+    public int getnBlocks() {
+
+        return nBlocks;
+    }
+
+    /**
+     * Getter to the Grid
+     *
+     * @return the nBlocks to the Grid
+     */
+    public int[][] getGrid() {
+
+        return grid;
+    }
 }

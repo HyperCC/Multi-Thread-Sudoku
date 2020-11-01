@@ -102,3 +102,4 @@ fabric.properties
 
 # si se trabaja con productos de jetbrains se puede ignorar .idea/
 .idea/
+gradle/

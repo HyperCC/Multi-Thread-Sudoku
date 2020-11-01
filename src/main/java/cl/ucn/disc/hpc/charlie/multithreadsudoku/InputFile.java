@@ -32,7 +32,15 @@ public final class InputFile {
      */
     private final File archivo;
 
+    /**
+     * The grid generated with the txt
+     */
     private int[][] grid;
+
+    /**
+     * The lenght to the complete grid
+     */
+    private int nBlocks;
 
     /**
      * Principal Constructor
@@ -43,6 +51,7 @@ public final class InputFile {
 
         this.archivo = new File(filePath);
         this.grid = readFile();
+        // the nBlocks is initialized in the readFile()
     }
 
     /**
@@ -58,33 +67,34 @@ public final class InputFile {
             // buffer to read the file line by line
             BufferedReader br = new BufferedReader(fr);
 
+            // initialize the principal nBlocks
+            this.nBlocks = Integer.parseInt(br.readLine());
+
+            // inicialize the grid to return
+            int[][] currentGrid = new int[this.nBlocks][this.nBlocks];
+
             // current linea and row
             String linea;
             int fila = 0;
-
-            // initialize the principal grid
-            int n = Integer.parseInt(br.readLine());
-            int[][] currentGrid = new int[n][n];
 
             // read and split all the values until de end file
             while ((linea = br.readLine()) != null) {
 
                 String[] numeros = linea.strip().split(" ");
+                //Arrays.asList(numeros).forEach(System.out::print);
 
                 // poblate the sudoku
                 for (int i = 0; i < numeros.length; i++) {
 
-                    currentGrid[fila][i] = Integer.valueOf(numeros[i]);
-                    fila++;
+                    currentGrid[fila][i] = Integer.parseInt(numeros[i]);
                 }
 
-                fila = 0;
+                fila++;
                 //Arrays.asList(numeros).forEach(System.out::println);
             }
 
             // Finally ever we have to close the file
             fr.close();
-
             return currentGrid;
 
             //Arrays.asList(currentGrid).forEach(System.out::println);
@@ -98,6 +108,26 @@ public final class InputFile {
 
         // lenght 0 if exist errors
         return new int[0][0];
+    }
+
+    /**
+     * Getter to the Grid
+     *
+     * @return the Grid
+     */
+    public int[][] getGrid() {
+
+        return this.grid;
+    }
+
+    /**
+     * Getter to the nBlocks
+     *
+     * @return the nBlocks to the Grid
+     */
+    public int getnBlocks() {
+
+        return this.nBlocks;
     }
 
 }
