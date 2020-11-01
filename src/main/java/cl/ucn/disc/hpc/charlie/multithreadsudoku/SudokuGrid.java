@@ -19,13 +19,41 @@
 
 package cl.ucn.disc.hpc.charlie.multithreadsudoku;
 
-public class App {
+public final class SudokuGrid {
 
-    public static void main(String[] args) {
-        SudokuGrid sudokuGrid = new SudokuGrid(9);
+    /**
+     * The grid dimension
+     */
+    int nBlocks;
 
-        sudokuGrid.printSudoku();
+    /**
+     * The principal matriz of the sudoku
+     */
+    int[][] grid;
 
+    /**
+     * The constructor
+     *
+     * @param nBlocks
+     */
+    public SudokuGrid(int nBlocks) {
+        this.nBlocks = nBlocks;
+        this.grid = new int[nBlocks][nBlocks];
+
+        for (int i = 0; i < this.nBlocks; i++) {
+            for (int j = 0; j < this.nBlocks; j++) {
+                this.grid[i][j] = 0;
+            }
+        }
+    }
+
+    public void printSudoku() {
+        for (int i = 0; i < this.nBlocks; i++) {
+            for (int j = 0; j < this.nBlocks; j++) {
+                System.out.print(this.grid[i][j] + " ");
+            }
+            System.out.println();
+        }
     }
 
 }
