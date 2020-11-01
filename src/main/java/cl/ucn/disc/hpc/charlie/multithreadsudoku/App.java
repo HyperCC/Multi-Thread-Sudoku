@@ -22,12 +22,12 @@ package cl.ucn.disc.hpc.charlie.multithreadsudoku;
 public class App {
 
     public static void main(String[] args) {
+
         SudokuGrid sudokuGrid = new SudokuGrid(9);
 
         sudokuGrid.printSudoku();
 
-        InputFile inputFile = new InputFile();
-        inputFile.readFile();
+        InputFile inputFile = new InputFile("inputSudokus/sudoku9x9.txt");
 
     }
 

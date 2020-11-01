@@ -19,45 +19,85 @@
 
 package cl.ucn.disc.hpc.charlie.multithreadsudoku;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
+import java.io.*;
+import java.util.Arrays;
 
-public class InputFile {
+/**
+ * Class to read and define the txt sudoku
+ */
+public final class InputFile {
 
-    public InputFile() {
+    /**
+     * The file with the sudoku to charge
+     */
+    private final File archivo;
 
+    private int[][] grid;
+
+    /**
+     * Principal Constructor
+     *
+     * @param filePath
+     */
+    public InputFile(String filePath) {
+
+        this.archivo = new File(filePath);
+        this.grid = readFile();
     }
 
-    public void readFile() {
-        File archivo = null;
-        FileReader fr = null;
-        BufferedReader br = null;
+    /**
+     * Read the file and initialize the sudoku
+     */
+    public int[][] readFile() {
 
+        // the txt file reader
         try {
-            // Apertura del fichero y creacion de BufferedReader para poder
-            // hacer una lectura comoda (disponer del metodo readLine()).
-            archivo = new File("sudoku9x9.txt");
-            fr = new FileReader(archivo);
-            br = new BufferedReader(fr);
 
-            // Lectura del fichero
+            // open the file to read
+            FileReader fr = new FileReader(this.archivo);
+            // buffer to read the file line by line
+            BufferedReader br = new BufferedReader(fr);
+
+            // current linea and row
             String linea;
-            while ((linea = br.readLine()) != null)
-                System.out.println(linea);
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            // En el finally cerramos el fichero, para asegurarnos
-            // que se cierra tanto si todo va bien como si salta
-            // una excepcion.
-            try {
-                if (null != fr) {
-                    fr.close();
+            int fila = 0;
+
+            // initialize the principal grid
+            int n = Integer.parseInt(br.readLine());
+            int[][] currentGrid = new int[n][n];
+
+            // read and split all the values until de end file
+            while ((linea = br.readLine()) != null) {
+
+                String[] numeros = linea.strip().split(" ");
+
+                // poblate the sudoku
+                for (int i = 0; i < numeros.length; i++) {
+
+                    currentGrid[fila][i] = Integer.valueOf(numeros[i]);
+                    fila++;
                 }
-            } catch (Exception e2) {
-                e2.printStackTrace();
+
+                fila = 0;
+                //Arrays.asList(numeros).forEach(System.out::println);
             }
+
+            // Finally ever we have to close the file
+            fr.close();
+
+            return currentGrid;
+
+            //Arrays.asList(currentGrid).forEach(System.out::println);
+
+            // catch BufferReader exceptions
+            // catch FileReader exceptions
+        } catch (IOException e) {
+
+            e.printStackTrace();
         }
+
+        // lenght 0 if exist errors
+        return new int[0][0];
     }
+
 }
