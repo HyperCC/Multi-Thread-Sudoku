@@ -19,7 +19,18 @@
 
 package cl.ucn.disc.hpc.charlie.multithreadsudoku;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+/**
+ * Principal unique Sudoku grid class
+ */
 public final class SudokuGrid {
+
+    /**
+     * The Logger
+     */
+    private static final Logger log = LoggerFactory.getLogger(App.class);
 
     /**
      * The grid dimension
@@ -37,6 +48,7 @@ public final class SudokuGrid {
      * @param nBlocks
      */
     public SudokuGrid(int nBlocks, int[][] grid) {
+
         this.nBlocks = nBlocks;
         this.grid = grid;
     }
@@ -48,12 +60,21 @@ public final class SudokuGrid {
      */
     public void printSudoku(int[][] grid) {
 
+        // the println i used only to keep the format to print
         for (int i = 0; i < grid.length; i++) {
             for (int j = 0; j < grid.length; j++) {
                 System.out.print(grid[i][j] + " ");
             }
             System.out.println();
         }
+    }
+
+    public void generateBlocks() {
+
+        // nBlocks multiplo de 3
+        int lenBlock = this.nBlocks / 3;
+
+
     }
 
     /**

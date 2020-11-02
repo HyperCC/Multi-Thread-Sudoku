@@ -35,7 +35,10 @@ public class App {
         InputFile inputFile = new InputFile("inputSudokus/sudoku9x9.txt");
 
         // generate a Object SudokuGrid with necessary properties
-        SudokuGrid sudokuGrid = new SudokuGrid(inputFile.getnBlocks(), inputFile.getGrid());
+        SudokuGrid sudokuGrid = new SudokuGrid(
+                inputFile.getnBlocks(),
+                inputFile.getGrid()
+        );
 
         // print the sudoku to extracted
         sudokuGrid.printSudoku(sudokuGrid.getGrid());

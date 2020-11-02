@@ -19,6 +19,9 @@
 
 package cl.ucn.disc.hpc.charlie.multithreadsudoku;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.*;
 import java.util.Arrays;
 
@@ -26,6 +29,11 @@ import java.util.Arrays;
  * Class to read and define the txt sudoku
  */
 public final class InputFile {
+
+    /**
+     * The Logger
+     */
+    private static final Logger log = LoggerFactory.getLogger(App.class);
 
     /**
      * The file with the sudoku to charge
@@ -59,6 +67,8 @@ public final class InputFile {
      */
     public int[][] readFile() {
 
+        log.debug("Initializing the Sudoku reader..");
+
         // the txt file reader
         try {
 
@@ -69,9 +79,11 @@ public final class InputFile {
 
             // initialize the principal nBlocks
             this.nBlocks = Integer.parseInt(br.readLine());
+            log.debug("N dimension to the Grid generated!");
 
             // inicialize the grid to return
             int[][] currentGrid = new int[this.nBlocks][this.nBlocks];
+            log.debug("Grid from the reader generated!");
 
             // current linea and row
             String linea;
@@ -95,18 +107,18 @@ public final class InputFile {
 
             // Finally ever we have to close the file
             fr.close();
+            log.debug("Ending the Grid creation..");
             return currentGrid;
-
-            //Arrays.asList(currentGrid).forEach(System.out::println);
 
             // catch BufferReader exceptions
             // catch FileReader exceptions
         } catch (IOException e) {
 
-            e.printStackTrace();
+            log.debug("Error in the txt reader. Details: {}", e.getMessage());
         }
 
         // lenght 0 if exist errors
+        log.debug("Wrong assignment of values in Grid!");
         return new int[0][0];
     }
 
