@@ -19,73 +19,74 @@
 
 package cl.ucn.disc.hpc.charlie.multithreadsudoku;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 /**
- * Principal unique Sudoku grid class
+ * The Cell class
  */
-public final class SudokuGrid {
+public class Cell {
 
     /**
-     * The Logger
+     * The enum to define a Block
      */
-    private static final Logger log = LoggerFactory.getLogger(App.class);
-
-    /**
-     * The grid dimension
-     */
-    private int nCells;
-
-    /**
-     * The principal matriz of the sudoku
-     */
-    private int[][] grid;
-
-    /**
-     * The constructor
-     *
-     * @param nCells
-     */
-    public SudokuGrid(int nCells, int[][] grid) {
-
-        this.nCells = nCells;
-        this.grid = grid;
+    public enum Block {
+        PRIMERO, SEGUNDO, TERCERO,
+        CUARTO, QUINTO, SEXTO,
+        SEPTIMO, OCTAVO, NOVENO
     }
 
     /**
-     * Print a complete grid
-     *
-     * @param grid
+     * The value
      */
-    public void printSudoku(int[][] grid) {
+    private int value;
 
-        // the println i used only to keep the format to print
-        for (int i = 0; i < grid.length; i++) {
-            for (int j = 0; j < grid.length; j++) {
-                System.out.print(grid[i][j] + " ");
-            }
-            System.out.println();
-        }
+    /**
+     * The Block
+     */
+    private Block block;
+
+    /**
+     * The constructor to Cell
+     *
+     * @param value
+     * @param block
+     */
+    public Cell(int value, Block block) {
+        this.value = value;
+        this.block = block;
     }
 
     /**
-     * Getter to the nBlocks
+     * Get the value
      *
-     * @return the nBlocks to the Grid
+     * @return the Cell value
      */
-    public int getnCells() {
-
-        return nCells;
+    public int getValue() {
+        return value;
     }
 
     /**
-     * Getter to the Grid
+     * Get the block
      *
-     * @return the nBlocks to the Grid
+     * @return the actual Block to this Cell
      */
-    public int[][] getGrid() {
+    public Block getBlock() {
+        return block;
+    }
 
-        return grid;
+    /**
+     * Set to the block
+     *
+     * @param value to update
+     */
+    public void setValue(int value) {
+        this.value = value;
+    }
+
+    /**
+     * Set to the block
+     *
+     * @param block to update
+     */
+    public void setBlock(Block block) {
+        this.block = block;
     }
 }

@@ -23,7 +23,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.*;
-import java.util.Arrays;
 
 /**
  * Class to read and define the txt sudoku
@@ -48,7 +47,7 @@ public final class InputFile {
     /**
      * The lenght to the complete grid
      */
-    private int nBlocks;
+    private int nCells;
 
     /**
      * Principal Constructor
@@ -78,11 +77,11 @@ public final class InputFile {
             BufferedReader br = new BufferedReader(fr);
 
             // initialize the principal nBlocks
-            this.nBlocks = Integer.parseInt(br.readLine());
+            this.nCells = Integer.parseInt(br.readLine());
             log.debug("N dimension to the Grid generated!");
 
             // inicialize the grid to return
-            int[][] currentGrid = new int[this.nBlocks][this.nBlocks];
+            int[][] currentGrid = new int[this.nCells][this.nCells];
             log.debug("Grid from the reader generated!");
 
             // current linea and row
@@ -137,9 +136,9 @@ public final class InputFile {
      *
      * @return the nBlocks to the Grid
      */
-    public int getnBlocks() {
+    public int getnCells() {
 
-        return this.nBlocks;
+        return this.nCells;
     }
 
 }

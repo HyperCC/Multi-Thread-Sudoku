@@ -36,7 +36,7 @@ public class App {
 
         // generate a Object SudokuGrid with necessary properties
         SudokuGrid sudokuGrid = new SudokuGrid(
-                inputFile.getnBlocks(),
+                inputFile.getnCells(),
                 inputFile.getGrid()
         );
 
