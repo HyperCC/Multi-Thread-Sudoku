@@ -40,14 +40,14 @@ public final class SudokuGrid {
     /**
      * The principal matriz of the sudoku
      */
-    private int[][] grid;
+    private Cell[][] grid;
 
     /**
      * The constructor
      *
      * @param nCells
      */
-    public SudokuGrid(int nCells, int[][] grid) {
+    public SudokuGrid(int nCells, Cell[][] grid) {
 
         this.nCells = nCells;
         this.grid = grid;
@@ -58,12 +58,13 @@ public final class SudokuGrid {
      *
      * @param grid
      */
-    public void printSudoku(int[][] grid) {
+    public void printSudoku(Cell[][] grid) {
 
         // the println i used only to keep the format to print
         for (int i = 0; i < grid.length; i++) {
+
             for (int j = 0; j < grid.length; j++) {
-                System.out.print(grid[i][j] + " ");
+                System.out.print(grid[i][j].getValue() + " ");
             }
             System.out.println();
         }
@@ -84,8 +85,8 @@ public final class SudokuGrid {
      *
      * @return the nBlocks to the Grid
      */
-    public int[][] getGrid() {
+    public Cell[][] getGrid() {
 
-        return grid;
+        return this.grid;
     }
 }

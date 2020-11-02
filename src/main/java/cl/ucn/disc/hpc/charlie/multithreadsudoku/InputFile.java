@@ -42,7 +42,7 @@ public final class InputFile {
     /**
      * The grid generated with the txt
      */
-    private int[][] grid;
+    private Cell[][] grid;
 
     /**
      * The lenght to the complete grid
@@ -64,7 +64,7 @@ public final class InputFile {
     /**
      * Read the file and initialize the sudoku
      */
-    public int[][] readFile() {
+    public Cell[][] readFile() {
 
         log.debug("Initializing the Sudoku reader..");
 
@@ -81,7 +81,8 @@ public final class InputFile {
             log.debug("N dimension to the Grid generated!");
 
             // inicialize the grid to return
-            int[][] currentGrid = new int[this.nCells][this.nCells];
+            Cell[][] currentGrid = new Cell[this.nCells][this.nCells];
+
             log.debug("Grid from the reader generated!");
 
             // current linea and row
@@ -97,7 +98,8 @@ public final class InputFile {
                 // poblate the sudoku
                 for (int i = 0; i < numeros.length; i++) {
 
-                    currentGrid[fila][i] = Integer.parseInt(numeros[i]);
+                    Cell cell = new Cell(Integer.parseInt(numeros[i]), assignBlock(fila, i));
+                    currentGrid[fila][i] = cell;
                 }
 
                 fila++;
@@ -118,7 +120,55 @@ public final class InputFile {
 
         // lenght 0 if exist errors
         log.debug("Wrong assignment of values in Grid!");
-        return new int[0][0];
+        return new Cell[0][0];
+    }
+
+    /**
+     * Block to assign in a Cell
+     *
+     * @param fila
+     * @param columna
+     * @return
+     */
+    public Cell.Block assignBlock(int fila, int columna) {
+
+        if (fila < this.nCells / 3) {
+
+            if (columna < this.nCells / 3) {
+                return Cell.Block.PRIMERO;
+
+            } else if (columna < (this.nCells / 3) * 2) {
+                return Cell.Block.SEGUNDO;
+
+            } else {
+                return Cell.Block.TERCERO;
+            }
+
+        } else if (fila < (this.nCells/3) * 2) {
+
+            if (columna < this.nCells / 3) {
+                return Cell.Block.CUARTO;
+
+            } else if (columna < (this.nCells / 3) * 2) {
+                return Cell.Block.QUINTO;
+
+            } else {
+                return Cell.Block.SEXTO;
+            }
+
+        } else {
+
+            if (columna < this.nCells / 3) {
+                return Cell.Block.SEPTIMO;
+
+            } else if (columna < (this.nCells / 3) * 2) {
+                return Cell.Block.OCTAVO;
+
+            } else {
+                return Cell.Block.NOVENO;
+            }
+
+        }
     }
 
     /**
@@ -126,7 +176,7 @@ public final class InputFile {
      *
      * @return the Grid
      */
-    public int[][] getGrid() {
+    public Cell[][] getGrid() {
 
         return this.grid;
     }

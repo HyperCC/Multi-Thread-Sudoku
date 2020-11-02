@@ -44,6 +44,13 @@ public class Cell {
     private Block block;
 
     /**
+     * The deafult constructor
+     */
+    public Cell() {
+
+    }
+
+    /**
      * The constructor to Cell
      *
      * @param value
