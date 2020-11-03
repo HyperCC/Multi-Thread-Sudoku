@@ -23,6 +23,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.*;
+import java.util.Arrays;
 
 /**
  * Class to read and define the txt sudoku
@@ -58,7 +59,7 @@ public final class InputFile {
 
         this.archivo = new File(filePath);
         this.grid = readFile();
-        // the nBlocks is initialized in the readFile()
+        // the nBlocks is initialized in readFile() method
     }
 
     /**
@@ -98,7 +99,10 @@ public final class InputFile {
                 // poblate the sudoku
                 for (int i = 0; i < numeros.length; i++) {
 
-                    Cell cell = new Cell(Integer.parseInt(numeros[i]), assignBlock(fila, i));
+                    Cell cell = new Cell(
+                            Integer.parseInt(numeros[i]),
+                            assignBlock(fila, i)
+                    );
                     currentGrid[fila][i] = cell;
                 }
 
@@ -144,7 +148,7 @@ public final class InputFile {
                 return Cell.Block.TERCERO;
             }
 
-        } else if (fila < (this.nCells/3) * 2) {
+        } else if (fila < (this.nCells / 3) * 2) {
 
             if (columna < this.nCells / 3) {
                 return Cell.Block.CUARTO;

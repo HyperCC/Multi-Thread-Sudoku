@@ -58,16 +58,21 @@ public final class SudokuGrid {
      *
      * @param grid
      */
-    public void printSudoku(Cell[][] grid) {
+    public String printSudoku(Cell[][] grid) {
 
-        // the println i used only to keep the format to print
+        // the Stringbuilder to all Grid
+        StringBuilder output = new StringBuilder();
+
         for (int i = 0; i < grid.length; i++) {
 
             for (int j = 0; j < grid.length; j++) {
-                System.out.print(grid[i][j].getValue() + " ");
+                output.append(grid[i][j].getValue()).append(" ");
             }
-            System.out.println();
+            output.append("\n");
         }
+
+        // formated Grid in a String
+        return output.toString();
     }
 
     /**

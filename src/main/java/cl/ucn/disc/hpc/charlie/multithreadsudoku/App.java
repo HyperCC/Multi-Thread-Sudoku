@@ -19,10 +19,21 @@
 
 package cl.ucn.disc.hpc.charlie.multithreadsudoku;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * The principal class to execute the code
  */
 public class App {
+
+    /**
+     * The Logger
+     */
+    private static final Logger log = LoggerFactory.getLogger(App.class);
 
     /**
      * Principal main method
@@ -41,7 +52,27 @@ public class App {
         );
 
         // print the sudoku to extracted
-        sudokuGrid.printSudoku(sudokuGrid.getGrid());
+        log.debug("The original sudoku");
+        System.out.println(sudokuGrid.printSudoku(sudokuGrid.getGrid()));
+
+        // the lienal solver by BT
+        LinealSolverByBT linealSolver = new LinealSolverByBT(
+                sudokuGrid.getGrid(),
+                sudokuGrid.getnCells());
+
+        // start the solver
+        String dimension = sudokuGrid.getnCells() + "x" + sudokuGrid.getnCells();
+
+        // time in solve the sudoku
+        long timeLinealSolver = linealSolver.initSolver();
+
+        if (timeLinealSolver != -1) {
+            System.out.println(sudokuGrid.printSudoku(linealSolver.getGrid()));
+            log.debug("Time in solve the {} sudoku: {}", dimension, timeLinealSolver);
+        }
+
+        log.debug("Ending the app..");
+
     }
 
 }
