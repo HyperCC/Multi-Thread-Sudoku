@@ -32,8 +32,19 @@ public class LinealSolverByBT {
      */
     private static final Logger log = LoggerFactory.getLogger(App.class);
 
+    /**
+     * The Grid
+     */
     private Cell[][] grid;
+
+    /**
+     * State to an empty Cell
+     */
     private final int emptyCell = 0;
+
+    /**
+     * Dimension n Cells to the Grid
+     */
     private int nCells;
 
     /**
@@ -67,30 +78,58 @@ public class LinealSolverByBT {
         return -1;
     }
 
+    /**
+     * Verify if the number exist in the same row
+     *
+     * @param row
+     * @param number
+     * @return
+     */
     public boolean isInRow(int row, int number) {
 
+        // search the number
         for (int i = 0; i < this.nCells; i++) {
-            if (grid[row][i].getValue() == number) {
 
+            if (grid[row][i].getValue() == number) {
                 return true;
+
             }
         }
 
         return false;
     }
 
+    /**
+     * Verify if the number exist in the same column
+     *
+     * @param col
+     * @param number
+     * @return
+     */
     public boolean isInCol(int col, int number) {
 
+        // search the number
         for (int i = 0; i < this.nCells; i++) {
-            if (grid[i][col].getValue() == number) {
 
+            if (grid[i][col].getValue() == number) {
                 return true;
+
             }
         }
 
         return false;
     }
 
+    // TODO: fix the method to search by Sector
+
+    /**
+     * Verify if the number exist in the same Block
+     *
+     * @param row
+     * @param col
+     * @param number
+     * @return
+     */
     public boolean isInBox(int row, int col, int number) {
 
         int currentRow = row - (row % 3);
@@ -108,6 +147,14 @@ public class LinealSolverByBT {
         return false;
     }
 
+    /**
+     * Verify if all rules are fulfilled
+     *
+     * @param row
+     * @param col
+     * @param number
+     * @return
+     */
     public boolean isAcceptable(int row, int col, int number) {
 
         return !isInRow(row, number) &&
@@ -115,17 +162,27 @@ public class LinealSolverByBT {
                 !isInBox(row, col, number);
     }
 
-
+    /**
+     * Principal method to solve recursively
+     *
+     * @return
+     */
     public boolean solve() {
+
+        // search in all the Grid
         for (int row = 0; row < this.nCells; row++) {
             for (int col = 0; col < this.nCells; col++) {
 
+                // find the Cell wihtout values
                 if (this.grid[row][col].getValue() == this.emptyCell) {
+
                     for (int number = 1; number <= this.nCells; number++) {
 
+                        // verify if an possible new value
                         if (isAcceptable(row, col, number)) {
                             this.grid[row][col].setValue(number);
 
+                            // recursive call
                             if (solve()) {
 
                                 return true;
@@ -135,14 +192,22 @@ public class LinealSolverByBT {
                             }
                         }
                     }
+                    // no empty Cell
                     return false;
                 }
             }
         }
+        // no more Cell to travel
         return true;
     }
 
+    /**
+     * Get the Grid
+     *
+     * @return
+     */
     public Cell[][] getGrid() {
+
         return grid;
     }
 }

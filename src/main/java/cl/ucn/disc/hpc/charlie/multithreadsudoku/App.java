@@ -72,7 +72,6 @@ public class App {
         }
 
         log.debug("Ending the app..");
-
     }
 
 }
