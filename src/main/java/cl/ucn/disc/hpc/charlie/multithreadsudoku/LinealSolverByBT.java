@@ -67,7 +67,7 @@ public class LinealSolverByBT {
         long t0 = System.currentTimeMillis();
 
         // initialize the resolution
-        if (solve()) {
+        if (solveSuduko(this.grid, 0, 0)) {
 
             log.info("Sudoku solved with");
             return System.currentTimeMillis() - t0;
@@ -85,12 +85,12 @@ public class LinealSolverByBT {
      * @param number
      * @return
      */
-    public boolean isInRow(int row, int number) {
+    public boolean isInRow(Cell currentGrid[][], int row, int number) {
 
         // search the number
         for (int i = 0; i < this.nCells; i++) {
 
-            if (grid[row][i].getValue() == number) {
+            if (currentGrid[row][i].getValue() == number) {
                 return true;
 
             }
@@ -106,12 +106,12 @@ public class LinealSolverByBT {
      * @param number
      * @return
      */
-    public boolean isInCol(int col, int number) {
+    public boolean isInCol(Cell currentGrid[][], int col, int number) {
 
         // search the number
         for (int i = 0; i < this.nCells; i++) {
 
-            if (grid[i][col].getValue() == number) {
+            if (currentGrid[i][col].getValue() == number) {
                 return true;
 
             }
@@ -120,30 +120,24 @@ public class LinealSolverByBT {
         return false;
     }
 
-    // TODO: fix the method to search by Sector
-
     /**
      * Verify if the number exist in the same Block
      *
      * @param row
      * @param col
-     * @param number
      * @return
      */
-    public boolean isInBox(int row, int col, int number) {
+    public boolean isInBox(Cell currentGrid[][], int row, int col, int number) {
 
-        int currentRow = row - (row % 3);
-        int currentCol = col - (col % 3);
+        int startRow = row - row % 3;
+        int startCol = col - col % 3;
 
-        for (int i = currentRow; i < currentRow; i++) {
-            for (int j = currentCol; j < currentCol; j++) {
+        for (int i = 0; i < (this.nCells / 3); i++)
+            for (int j = 0; j < 3; j++)
 
-                if (grid[i][j].getValue() == number) {
+                if (currentGrid[i + startRow][j + startCol].getValue() == number)
                     return true;
 
-                }
-            }
-        }
         return false;
     }
 
@@ -155,50 +149,59 @@ public class LinealSolverByBT {
      * @param number
      * @return
      */
-    public boolean isAcceptable(int row, int col, int number) {
+    public boolean isAcceptable(Cell currentGrid[][], int row, int col, int number) {
 
-        return !isInRow(row, number) &&
-                !isInCol(col, number) &&
-                !isInBox(row, col, number);
+        return !isInRow(currentGrid, row, number) &&
+                !isInCol(currentGrid, col, number) &&
+                !isInBox(currentGrid, row, col, number);
     }
 
     /**
      * Principal method to solve recursively
      *
+     * @param currentGrid
+     * @param row
+     * @param col
      * @return
      */
-    public boolean solve() {
+    public boolean solveSuduko(Cell[][] currentGrid, int row, int col) {
 
-        // search in all the Grid
-        for (int row = 0; row < this.nCells; row++) {
-            for (int col = 0; col < this.nCells; col++) {
+        // finalization condition
+        if (row == this.nCells - 1 && col == this.nCells)
+            return true;
 
-                // find the Cell wihtout values
-                if (this.grid[row][col].getValue() == this.emptyCell) {
-
-                    for (int number = 1; number <= this.nCells; number++) {
-
-                        // verify if an possible new value
-                        if (isAcceptable(row, col, number)) {
-                            this.grid[row][col].setValue(number);
-
-                            // recursive call
-                            if (solve()) {
-
-                                return true;
-                            } else {
-
-                                this.grid[row][col].setValue(this.emptyCell);
-                            }
-                        }
-                    }
-                    // no empty Cell
-                    return false;
-                }
-            }
+        // Check if column value  becomes 9 ,
+        if (col == this.nCells) {
+            row++;
+            col = 0;
         }
-        // no more Cell to travel
-        return true;
+
+        // Check if the current position is "void"
+        if (currentGrid[row][col].getValue() != this.emptyCell)
+            return solveSuduko(currentGrid, row, col + 1);
+
+        for (int num = 1; num <= this.nCells; num++) {
+
+            // Check if it is safe to place
+            if (isAcceptable(currentGrid, row, col, num)) {
+
+                /*  assigning the num in the current
+                (row,col)  position of the grid and
+                assuming our assined num in the position
+                is correct */
+                currentGrid[row][col].setValue(num);
+
+                // Checking for next
+                // possibility with next column
+                if (solveSuduko(currentGrid, row, col + 1))
+                    return true;
+            }
+            /* removing the assigned num , since our
+               assumption was wrong , and we go for next
+               assumption with diff num value   */
+            currentGrid[row][col].setValue(this.emptyCell);
+        }
+        return false;
     }
 
     /**
