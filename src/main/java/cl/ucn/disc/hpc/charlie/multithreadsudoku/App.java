@@ -19,11 +19,13 @@
 
 package cl.ucn.disc.hpc.charlie.multithreadsudoku;
 
+import org.apache.commons.lang3.time.StopWatch;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * The principal class to execute the code
@@ -44,6 +46,10 @@ public class App {
 
         // read the txt with the sudoku to solve
         InputFile inputFile = new InputFile("inputSudokus/sudoku9x9.txt");
+
+        // cant of cores
+        final int maxCores = Runtime.getRuntime().availableProcessors();
+        log.debug("max core cantity {}", maxCores);
 
         // generate a Object SudokuGrid with necessary properties
         SudokuGrid sudokuGrid = new SudokuGrid(
@@ -66,9 +72,14 @@ public class App {
         // time in solve the sudoku
         long timeLinealSolver = linealSolver.initSolver();
 
+        // correctly result to Lineal Solver
         if (timeLinealSolver != -1) {
             System.out.println(sudokuGrid.printSudoku(linealSolver.getGrid()));
             log.debug("Time in solve the {} sudoku: {}", dimension, timeLinealSolver);
+
+        } else {
+
+            log.debug("No exist solutions to this sudoku");
         }
 
         log.debug("Ending the app..");

@@ -19,8 +19,11 @@
 
 package cl.ucn.disc.hpc.charlie.multithreadsudoku;
 
+import org.apache.commons.lang3.time.StopWatch;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.concurrent.TimeUnit;
 
 /**
  * Lineal Solver using Backtracking
@@ -30,7 +33,12 @@ public class LinealSolverByBT {
     /**
      * The Logger
      */
-    private static final Logger log = LoggerFactory.getLogger(App.class);
+    private final Logger log = LoggerFactory.getLogger(App.class);
+
+    /**
+     * The Chrono - to make snapshot of time
+     */
+    private final StopWatch stopWatch = StopWatch.createStarted();
 
     /**
      * The Grid
@@ -63,14 +71,15 @@ public class LinealSolverByBT {
      */
     public long initSolver() {
 
-        // initial time
-        long t0 = System.currentTimeMillis();
+        // restart the time initial time
+        stopWatch.reset();
+        stopWatch.start();
 
         // initialize the resolution
         if (solveSuduko(this.grid, 0, 0)) {
 
             log.info("Sudoku solved with");
-            return System.currentTimeMillis() - t0;
+            return stopWatch.getTime(TimeUnit.MILLISECONDS);
         }
 
         // sudoku unsolved - format error in sudoku inserted
@@ -185,20 +194,15 @@ public class LinealSolverByBT {
             // Check if it is safe to place
             if (isAcceptable(currentGrid, row, col, num)) {
 
-                /*  assigning the num in the current
-                (row,col)  position of the grid and
-                assuming our assined num in the position
-                is correct */
+                // assigning the num in the current (row,col)
                 currentGrid[row][col].setValue(num);
 
                 // Checking for next
-                // possibility with next column
                 if (solveSuduko(currentGrid, row, col + 1))
                     return true;
             }
-            /* removing the assigned num , since our
-               assumption was wrong , and we go for next
-               assumption with diff num value   */
+
+            // removing the assigned num
             currentGrid[row][col].setValue(this.emptyCell);
         }
         return false;
