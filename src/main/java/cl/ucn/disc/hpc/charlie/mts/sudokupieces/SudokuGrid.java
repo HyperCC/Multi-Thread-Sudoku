@@ -17,8 +17,9 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
-package cl.ucn.disc.hpc.charlie.multithreadsudoku;
+package cl.ucn.disc.hpc.charlie.mts.sudokupieces;
 
+import cl.ucn.disc.hpc.charlie.mts.App;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -41,6 +42,13 @@ public final class SudokuGrid {
      * The principal matriz of the sudoku
      */
     private Cell[][] grid;
+
+    /**
+     * The default constructor
+     */
+    public SudokuGrid(){
+
+    }
 
     /**
      * The constructor

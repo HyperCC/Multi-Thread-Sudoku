@@ -17,13 +17,13 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
-package cl.ucn.disc.hpc.charlie.multithreadsudoku;
+package cl.ucn.disc.hpc.charlie.mts;
 
+import cl.ucn.disc.hpc.charlie.mts.sudokupieces.Cell;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.*;
-import java.util.Arrays;
 
 /**
  * Class to read and define the txt sudoku
@@ -93,8 +93,9 @@ public final class InputFile {
             // read and split all the values until de end file
             while ((linea = br.readLine()) != null) {
 
-                String[] numeros = linea.strip().split(" ");
+                String[] numerosCrudos = linea.strip().split(" ");
                 //Arrays.asList(numeros).forEach(System.out::print);
+                String[] numeros = quitZeros(numerosCrudos);
 
                 // poblate the sudoku
                 for (int i = 0; i < numeros.length; i++) {
@@ -173,6 +174,26 @@ public final class InputFile {
             }
 
         }
+    }
+
+    /**
+     * Delete the zeros from the zudoku txt format (00 01 04 ..)
+     *
+     * @param numeros
+     * @return formated numbers
+     */
+    public String[] quitZeros(String[] numeros) {
+
+        String[] numerosFormateados = new String[numeros.length];
+
+        for (int i = 0; i < numeros.length; i++) {
+            if (numeros[i].charAt(0) == '0') {
+                log.debug(numeros[i].substring(1));
+                numerosFormateados[i] = numeros[i].substring(1);
+            }
+        }
+
+        return numerosFormateados;
     }
 
     /**

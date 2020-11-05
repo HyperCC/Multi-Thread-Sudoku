@@ -17,7 +17,7 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
-package cl.ucn.disc.hpc.charlie.multithreadsudoku;
+package cl.ucn.disc.hpc.charlie.mts.sudokupieces;
 
 /**
  * The Cell class

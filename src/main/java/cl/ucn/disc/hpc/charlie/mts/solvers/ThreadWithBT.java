@@ -17,8 +17,11 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
-package cl.ucn.disc.hpc.charlie.multithreadsudoku;
+package cl.ucn.disc.hpc.charlie.mts.solvers;
 
+import cl.ucn.disc.hpc.charlie.mts.App;
+import cl.ucn.disc.hpc.charlie.mts.sudokupieces.Cell;
+import cl.ucn.disc.hpc.charlie.mts.sudokupieces.SudokuGrid;
 import org.apache.commons.lang3.time.StopWatch;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,7 +31,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * Lineal Solver using Backtracking
  */
-public class LinealSolverByBT {
+public class ThreadWithBT extends Thread {
 
     /**
      * The Logger
@@ -61,9 +64,21 @@ public class LinealSolverByBT {
      * @param grid
      * @param nCells
      */
-    public LinealSolverByBT(Cell[][] grid, int nCells) {
+    public ThreadWithBT(Cell[][] grid, int nCells) {
+
+        super();
         this.grid = grid;
         this.nCells = nCells;
+    }
+
+    /**
+     * Execute this run() if the Thread is started
+     */
+    @Override
+    public void run() {
+
+        long time = initSolver();
+        log.debug("THE TIME IS {}", time);
     }
 
     /**
@@ -78,8 +93,9 @@ public class LinealSolverByBT {
         // initialize the resolution
         if (solveSuduko(this.grid, 0, 0)) {
 
-            log.info("Sudoku solved with");
-            return stopWatch.getTime(TimeUnit.MILLISECONDS);
+            log.debug("Sudoku solved!");
+            System.out.println(new SudokuGrid().printSudoku(this.grid));
+            return stopWatch.getTime(TimeUnit.NANOSECONDS);
         }
 
         // sudoku unsolved - format error in sudoku inserted
