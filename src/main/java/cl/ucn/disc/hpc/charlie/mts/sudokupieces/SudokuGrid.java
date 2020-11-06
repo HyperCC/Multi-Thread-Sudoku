@@ -26,12 +26,12 @@ import org.slf4j.LoggerFactory;
 /**
  * Principal unique Sudoku grid class
  */
-public final class SudokuGrid {
+public class SudokuGrid {
 
     /**
      * The Logger
      */
-    private static final Logger log = LoggerFactory.getLogger(App.class);
+    private final Logger log = LoggerFactory.getLogger(App.class);
 
     /**
      * The grid dimension
@@ -42,13 +42,6 @@ public final class SudokuGrid {
      * The principal matriz of the sudoku
      */
     private Cell[][] grid;
-
-    /**
-     * The default constructor
-     */
-    public SudokuGrid(){
-
-    }
 
     /**
      * The constructor

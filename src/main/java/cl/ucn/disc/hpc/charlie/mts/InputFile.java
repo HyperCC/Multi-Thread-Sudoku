@@ -33,7 +33,7 @@ public final class InputFile {
     /**
      * The Logger
      */
-    private static final Logger log = LoggerFactory.getLogger(App.class);
+    private final Logger log = LoggerFactory.getLogger(App.class);
 
     /**
      * The file with the sudoku to charge
@@ -79,7 +79,7 @@ public final class InputFile {
 
             // initialize the principal nBlocks
             this.nCells = Integer.parseInt(br.readLine());
-            log.debug("N dimension to the Grid generated!");
+            log.debug("{}x{} dimension to the Sudoku inserted!", this.nCells, this.nCells);
 
             // inicialize the grid to return
             Cell[][] currentGrid = new Cell[this.nCells][this.nCells];
@@ -188,7 +188,7 @@ public final class InputFile {
 
         for (int i = 0; i < numeros.length; i++) {
             if (numeros[i].charAt(0) == '0') {
-                log.debug(numeros[i].substring(1));
+
                 numerosFormateados[i] = numeros[i].substring(1);
             }
         }

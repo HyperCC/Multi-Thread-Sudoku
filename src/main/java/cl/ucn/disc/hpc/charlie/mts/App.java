@@ -26,6 +26,8 @@ import org.apache.commons.lang3.time.StopWatch;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -48,7 +50,7 @@ public class App {
     /**
      * Principal main method
      *
-     * @param args
+     * @param args .
      */
     public static void main(String[] args) throws InterruptedException {
 
@@ -56,8 +58,7 @@ public class App {
         InputFile inputFile = new InputFile("inputSudokus/sudoku9x9.txt");
 
         // cant of cores
-        //final int maxCores = Runtime.getRuntime().availableProcessors();
-        final int maxCores = 16;
+        final int maxCores = Runtime.getRuntime().availableProcessors();
         log.debug("max core cantity {}", maxCores);
 
         // generate a Object SudokuGrid with necessary properties
@@ -70,43 +71,73 @@ public class App {
         log.debug("The original sudoku");
         System.out.println(sudokuGrid.printSudoku(sudokuGrid.getGrid()));
 
-
-
+        /*
         // the lienal solver by BT
         ThreadWithBT linealSolver = new ThreadWithBT(
-                sudokuGrid.getGrid(),
+                theGrid,
                 sudokuGrid.getnCells());
 
         linealSolver.start();
+        */
 
-
-        //long Ts = solveSudoku(1, inputFile.getGrid()).getTime(TimeUnit.NANOSECONDS);
-        //log.debug("Time to process sequentially: {} nanoseconds", Ts);
-
-        log.debug("Speedup: 1 with 1 Thread");
-        log.debug("Efficiency: 1 with 1 Thread");
-        log.debug("**********************************************************\n");
-
-        /*
+        long Ts = 0;
         // number of Threads to use simultaneously from 1 to N cores
-        for (int nThreads = 2; nThreads <= maxCores; nThreads++) {
+        for (int nThreads = 1; nThreads <= maxCores; nThreads++) {
 
-            // restart the time
-            stopWatch.reset();
-            stopWatch.start();
+            // all times capted
+            ArrayList<Long> times = new ArrayList<>();
 
-            // Time to execution with n Threads in nanoseconds
-            long Tn = solveSudoku(nThreads, inputFile.getGrid()).getTime(TimeUnit.NANOSECONDS);
-            log.debug("Time to process with {} Threads: {} nanoseconds", nThreads, Tn);
+            // generate a average of statistics
+            for (int i = 0; i < 102; i++) {
+                // restart the time
+                stopWatch.reset();
+                stopWatch.start();
 
-            double speedup = (Ts * 1.0 / Tn * 1.0);
+                // calculate the TS average or execution to 1 Thread
+                if (nThreads == 1) {
+
+                    Ts = solveSudoku(1, sudokuGrid.getGrid()).getTime(TimeUnit.NANOSECONDS);
+                    log.debug("Time to process sequentially (1 Thread): {} nanoseconds", Ts);
+
+                    times.add(Ts);
+
+                } else {
+
+                    // Time to execution with n Threads in nanoseconds
+                    long Tn = solveSudoku(nThreads, sudokuGrid.getGrid()).getTime(TimeUnit.NANOSECONDS);
+                    log.debug("Time to process with {} Threads: {} nanoseconds", nThreads, Tn);
+
+                    times.add(Tn);
+                }
+
+            }
+
+            log.debug("ALL TIMES CAPTURED WITH {} THREADS", nThreads);
+            for (Long time : times) {
+                log.info(time.toString());
+            }
+
+            // delete minim and maxim to avoid bias
+            times.remove(Collections.min(times));
+            times.remove(Collections.max(times));
+
+            // Tn averge to n Threads
+            if (nThreads == 1) {
+
+                Ts = (long) times.stream().mapToDouble(d -> d).average().orElse(0.0);
+            }
+
+            // results for iteration
+            double averageTn = times.stream().mapToDouble(d -> d).average().orElse(0.0);
+            log.debug("{} cores take an average of: {} nanoseconds", nThreads, averageTn);
+
+            double speedup = (Ts * 1.0 / averageTn * 1.0);
             log.debug("Speedup: {} with {} Threads", speedup, nThreads);
             log.debug("Efficiency: {} with {} Threads", (speedup / nThreads * 1.0), nThreads);
 
             log.debug("**********************************************************\n");
-        }
 
-         */
+        }
 
         log.debug("End the application..");
     }
@@ -114,14 +145,18 @@ public class App {
     /**
      * Process the number of prime numbers and time
      *
-     * @return time to complete
+     * @param maxThreads .
+     * @param grid       .
+     * @return .
+     * @throws InterruptedException .
      */
     public static StopWatch solveSudoku(final int maxThreads, Cell[][] grid) throws InterruptedException {
 
         // The threads executor - use <n> threads to ..
         final ExecutorService executorService = Executors.newFixedThreadPool(maxThreads);
 
-        executorService.submit(new ThreadWithBT(grid, maxThreads));
+        // start the Thread execution
+        executorService.submit(new ThreadWithBT(grid, grid.length));
 
         // Don't receive more tasks
         executorService.shutdown();

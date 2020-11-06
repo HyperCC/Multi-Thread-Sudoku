@@ -21,7 +21,6 @@ package cl.ucn.disc.hpc.charlie.mts.solvers;
 
 import cl.ucn.disc.hpc.charlie.mts.App;
 import cl.ucn.disc.hpc.charlie.mts.sudokupieces.Cell;
-import cl.ucn.disc.hpc.charlie.mts.sudokupieces.SudokuGrid;
 import org.apache.commons.lang3.time.StopWatch;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,7 +45,7 @@ public class ThreadWithBT extends Thread {
     /**
      * The Grid
      */
-    private Cell[][] grid;
+    private final Cell[][] grid;
 
     /**
      * State to an empty Cell
@@ -56,13 +55,13 @@ public class ThreadWithBT extends Thread {
     /**
      * Dimension n Cells to the Grid
      */
-    private int nCells;
+    private final int nCells;
 
     /**
      * The Constructor
      *
-     * @param grid
-     * @param nCells
+     * @param grid   .
+     * @param nCells .
      */
     public ThreadWithBT(Cell[][] grid, int nCells) {
 
@@ -77,8 +76,9 @@ public class ThreadWithBT extends Thread {
     @Override
     public void run() {
 
-        long time = initSolver();
-        log.debug("THE TIME IS {}", time);
+        initSolver();
+        //long time = initSolver();
+        //log.debug("THE TIME IS {}", time);
     }
 
     /**
@@ -94,7 +94,7 @@ public class ThreadWithBT extends Thread {
         if (solveSuduko(this.grid, 0, 0)) {
 
             log.debug("Sudoku solved!");
-            System.out.println(new SudokuGrid().printSudoku(this.grid));
+            //System.out.println(new SudokuGrid().printSudoku(this.grid));
             return stopWatch.getTime(TimeUnit.NANOSECONDS);
         }
 
@@ -106,11 +106,12 @@ public class ThreadWithBT extends Thread {
     /**
      * Verify if the number exist in the same row
      *
-     * @param row
-     * @param number
-     * @return
+     * @param currentGrid .
+     * @param row         .
+     * @param number      .
+     * @return .
      */
-    public boolean isInRow(Cell currentGrid[][], int row, int number) {
+    public boolean isInRow(Cell[][] currentGrid, int row, int number) {
 
         // search the number
         for (int i = 0; i < this.nCells; i++) {
@@ -224,13 +225,4 @@ public class ThreadWithBT extends Thread {
         return false;
     }
 
-    /**
-     * Get the Grid
-     *
-     * @return
-     */
-    public Cell[][] getGrid() {
-
-        return grid;
-    }
 }
