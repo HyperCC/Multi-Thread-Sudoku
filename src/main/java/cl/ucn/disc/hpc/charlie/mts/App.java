@@ -19,6 +19,7 @@
 
 package cl.ucn.disc.hpc.charlie.mts;
 
+import checkers.units.quals.A;
 import cl.ucn.disc.hpc.charlie.mts.solvers.ThreadWithBT;
 import cl.ucn.disc.hpc.charlie.mts.sudokupieces.Cell;
 import cl.ucn.disc.hpc.charlie.mts.sudokupieces.SudokuGrid;
@@ -59,6 +60,7 @@ public class App {
 
         // cant of cores
         final int maxCores = Runtime.getRuntime().availableProcessors();
+        // final int maxCores = 32;
         log.debug("max core cantity {}", maxCores);
 
         // generate a Object SudokuGrid with necessary properties
@@ -80,6 +82,9 @@ public class App {
         linealSolver.start();
         */
 
+        // complete list with all data obtained
+        ArrayList<String> allAverages = new ArrayList<>();
+
         long Ts = 0;
         // number of Threads to use simultaneously from 1 to N cores
         for (int nThreads = 1; nThreads <= maxCores; nThreads++) {
@@ -88,7 +93,7 @@ public class App {
             ArrayList<Long> times = new ArrayList<>();
 
             // generate a average of statistics
-            for (int i = 0; i < 102; i++) {
+            for (int i = 0; i < 120; i++) {
                 // restart the time
                 stopWatch.reset();
                 stopWatch.start();
@@ -114,12 +119,16 @@ public class App {
 
             log.debug("ALL TIMES CAPTURED WITH {} THREADS", nThreads);
             for (Long time : times) {
+
                 log.info(time.toString());
             }
 
             // delete minim and maxim to avoid bias
-            times.remove(Collections.min(times));
-            times.remove(Collections.max(times));
+            for (int i = 0; i < 10; i++) {
+
+                times.remove(Collections.min(times));
+                times.remove(Collections.max(times));
+            }
 
             // Tn averge to n Threads
             if (nThreads == 1) {
@@ -129,14 +138,30 @@ public class App {
 
             // results for iteration
             double averageTn = times.stream().mapToDouble(d -> d).average().orElse(0.0);
-            log.debug("{} cores take an average of: {} nanoseconds", nThreads, averageTn);
+            String avrTime = (nThreads + " cores take an average of: " + averageTn + " nanoseconds");
+            log.debug(avrTime);
+            allAverages.add(avrTime);
 
             double speedup = (Ts * 1.0 / averageTn * 1.0);
-            log.debug("Speedup: {} with {} Threads", speedup, nThreads);
-            log.debug("Efficiency: {} with {} Threads", (speedup / nThreads * 1.0), nThreads);
 
+            String speedupValue = ("Speedup: " + speedup + " with " + nThreads + " Threads");
+            log.debug(speedupValue);
+            allAverages.add(speedupValue);
+
+            String efficiencyValue = ("Efficiency: " + (speedup / nThreads * 1.0) + " with " + nThreads + " Threads");
+            log.debug(efficiencyValue);
+            allAverages.add(efficiencyValue);
+
+            allAverages.add("");
             log.debug("**********************************************************\n");
+        }
 
+        log.debug("ALL DATA OBTAINED");
+
+        // print all data obtained
+        for (String avr : allAverages) {
+
+            log.debug(avr);
         }
 
         log.debug("End the application..");
