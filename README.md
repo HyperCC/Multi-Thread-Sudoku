@@ -14,7 +14,8 @@ results to classify the algorithm.
 ## Details and Observations
 
 * For each amount of Threads, 120 tests were made, from these the 10 largest and 10 smallest were removed to try to prevent a drop in the average.
-* The results are made considering Intel processor with 2 principal cores using Hyperthreading, 4 cores in total.
+* The results are from a 9x9 sudoku and the algorithm works to solve for 9 quadrants. 
+* Considere an Intel processor with 2 principal cores using Hyperthreading, 4 cores in total.
 * Tests were also carried out for 32 cores to see how the results varied, but they went down or up in chaotic results.
 * If there are some other elements it is because I tried to make the code with the CSP algorithm, but I could not represent it correctly.
 
@@ -28,6 +29,15 @@ results to classify the algorithm.
 | 3   | 675942  | 1.5206  | 0.5068  |
 | 4   | 579548  | 1.7736  | 0.4434  |
 
+
+## Efficiency Graph
+
+![TheEfficiency](./img/efficiency.png) 
+
+
+## Speedup Graph
+
+![TheSpeedup](./img/speedup.png) 
 
 ## License
 
